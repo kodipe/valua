@@ -1,38 +1,46 @@
+const IS_NOT_A_STRING_ERROR = "IS_NOT_A_STRING_ERROR";
+const IS_NOT_A_NUMBER_ERROR = "IS_NOT_A_NUMBER_ERROR";
+const IS_REQUIRED_ERROR = "IS_REQUIRED_ERROR";
+const NOT_PASSED_TEST_ERROR = "NOT_PASSED_TEST_ERROR"
+const TO_SMALL_ERROR = "TO_SMALL_ERROR"
+const TO_BIG_ERROR = "TO_BIG_ERROR"
+const IS_NOT_AN_ARRAY_ERROR = "IS_NOT_AN_ARRAY_ERROR"
+
 const vlad = (validation = v => v) => {
   return {
-    string: (config) => vlad(v => {
+    string: (config = {}) => vlad(v => {
       if(typeof v === "string") {
         return v
       } else {
-        const err = Error("Its not a string");
-        err.errors = "Its not a string"
+        const err = Error(IS_NOT_A_STRING_ERROR);
+        err.errors = config.error || IS_NOT_A_STRING_ERROR
         return err;
       }
     }),
-    number: (config) => vlad(v => {
+    number: (config = {}) => vlad(v => {
       if(typeof v === "number") {
         return v
       } else {
-        const err = Error("Its not a number");
-        err.errors = "Its not a number";
+        const err = Error(IS_NOT_A_NUMBER_ERROR);
+        err.errors = config.error || IS_NOT_A_NUMBER_ERROR;
         return err;
       }
     }),
-    min: (config) => vlad(v => {
-      if(v >= config) {
+    min: (threshold, config = {}) => vlad(v => {
+      if(v >= threshold) {
         return v;
       } else {
-        const err = Error("To small number")
-        err.errors = "To small number";
+        const err = Error(TO_SMALL_ERROR)
+        err.errors = config.error || TO_SMALL_ERROR;
         return err;
       }
     }),
-    max: (config) => vlad(v => {
-      if(v <= config) {
+    max: (threshold, config = {}) => vlad(v => {
+      if(v <= threshold) {
         return v;
       } else {
-        const err = Error("To big number")
-        err.errors = "To big number";
+        const err = Error(TO_BIG_ERROR)
+        err.errors = TO_BIG_ERROR;
         return err;
       }
     }),
@@ -47,18 +55,18 @@ const vlad = (validation = v => v) => {
       })
 
       if(Object.keys(objErrors).length > 0) {
-        const err = Error("Object error");
+        const err = Error("Object errors");
         err.errors = objErrors
         return err;
       }
       return v;
     }),
-    array: (config) => vlad(v => {
+    array: (config = {}) => vlad(v => {
       if(Array.isArray(v)) {
         return v;
       } else {
-        const err = Error("It's not an array")
-        err.errors = "It's not an array";
+        const err = Error(IS_NOT_AN_ARRAY_ERROR)
+        err.errors = config.error || IS_NOT_AN_ARRAY_ERROR;
         return err;
       }
     }),
@@ -73,17 +81,17 @@ const vlad = (validation = v => v) => {
       });
 
       if(Object.keys(arrErrors).length > 0) {
-        const err = Error("Array error");
+        const err = Error("Array errors");
         err.errors = arrErrors
         return err;
       }
 
       return v;
     }),
-    required: (config) => vlad(v => {
+    required: (config = {}) => vlad(v => {
       if(v === undefined || v === null) {
-        const err = Error("Is required")
-        err.errors = "Is required";
+        const err = Error(IS_REQUIRED_ERROR)
+        err.errors = config.error || IS_REQUIRED_ERROR;
         return err;
       }
       return v;
@@ -92,8 +100,8 @@ const vlad = (validation = v => v) => {
       if(config(v)) {
         return true
       } else {
-        const err = Error("Not passed test");
-        err.errors = "Not passed test"
+        const err = Error(NOT_PASSED_TEST_ERROR);
+        err.errors = NOT_PASSED_TEST_ERROR
         return err;
       }
     }),
@@ -131,16 +139,16 @@ const {
 const schema = object({
   name: string(),
   age: number().min(20),
-  items: array().each(number()),
+  items: array().each(number().min(20)),
   something: object({
     nested: number()
   })
 })
 
 const obj = {
-  name: "John",
+  name: 12,
   age:18,
-  items: [10, 12, "TEST"],
+  items: [10, 22, 15],
   something: {
     nested: "test"
   }
