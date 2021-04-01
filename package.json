@@ -1,5 +1,5 @@
 {
-  "name": "valuator",
+  "name": "valua",
   "version": "0.0.1",
   "description": "Functional JavaScript validation library",
   "main": "./lib/index.js",
@@ -12,13 +12,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kodipe/valuator.git"
+    "url": "git+https://github.com/kodipe/valua.git"
   },
   "author": "Konrad Przydział <konrad.przydzial@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kodipe/valuator/issues"
+    "url": "https://github.com/kodipe/valua/issues"
   },
-  "homepage": "https://github.com/kodipe/valuator#readme",
+  "homepage": "https://github.com/kodipe/valua#readme",
   "files": ["lib/**/*"]
 }

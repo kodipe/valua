@@ -1,14 +1,14 @@
-import { valuator, ValuatorError } from "../src/index";
+import { valua, ValuaError } from "../src/index";
 
 // Simple validator
 
-const simpleValidator = valuator()
+const simpleValidator = valua()
   .number()
   .max(20);
 
 const simpleResult = simpleValidator.validate(25)
 
-if(simpleResult instanceof ValuatorError) {
+if(simpleResult instanceof ValuaError) {
   console.log(simpleResult.errors);
 } else {
   console.log(simpleResult);
@@ -23,7 +23,7 @@ const {
   object,
   required,
   test
-} = valuator()
+} = valua()
 
 const schema = object({
   name: string(),
@@ -45,7 +45,7 @@ const obj = {
 
 const result = schema.validate(obj);
 
-if(result instanceof ValuatorError) {
+if(result instanceof ValuaError) {
   console.log(result.errors);
 } else {
   console.log(result);
