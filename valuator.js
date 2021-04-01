@@ -6,9 +6,9 @@ const TO_SMALL_ERROR = "TO_SMALL_ERROR"
 const TO_BIG_ERROR = "TO_BIG_ERROR"
 const IS_NOT_AN_ARRAY_ERROR = "IS_NOT_AN_ARRAY_ERROR"
 
-const vlad = (validation = v => v) => {
+const valuator = (validation = v => v) => {
   return {
-    string: (config = {}) => vlad(v => {
+    string: (config = {}) => valuator(v => {
       if(typeof v === "string") {
         return v
       } else {
@@ -17,7 +17,7 @@ const vlad = (validation = v => v) => {
         return err;
       }
     }),
-    number: (config = {}) => vlad(v => {
+    number: (config = {}) => valuator(v => {
       if(typeof v === "number") {
         return v
       } else {
@@ -26,7 +26,7 @@ const vlad = (validation = v => v) => {
         return err;
       }
     }),
-    min: (threshold, config = {}) => vlad(v => {
+    min: (threshold, config = {}) => valuator(v => {
       if(v >= threshold) {
         return v;
       } else {
@@ -35,7 +35,7 @@ const vlad = (validation = v => v) => {
         return err;
       }
     }),
-    max: (threshold, config = {}) => vlad(v => {
+    max: (threshold, config = {}) => valuator(v => {
       if(v <= threshold) {
         return v;
       } else {
@@ -44,7 +44,7 @@ const vlad = (validation = v => v) => {
         return err;
       }
     }),
-    object: (config) => vlad(v => {
+    object: (config) => valuator(v => {
       const objErrors = {};
 
       Object.keys(config).forEach(schemaKey => {
@@ -61,7 +61,7 @@ const vlad = (validation = v => v) => {
       }
       return v;
     }),
-    array: (config = {}) => vlad(v => {
+    array: (config = {}) => valuator(v => {
       if(Array.isArray(v)) {
         return v;
       } else {
@@ -70,7 +70,7 @@ const vlad = (validation = v => v) => {
         return err;
       }
     }),
-    each: (config) => vlad(v => {
+    each: (config) => valuator(v => {
       const arrErrors = {};
 
       v.forEach((i, index) => {
@@ -88,7 +88,7 @@ const vlad = (validation = v => v) => {
 
       return v;
     }),
-    required: (config = {}) => vlad(v => {
+    required: (config = {}) => valuator(v => {
       if(v === undefined || v === null) {
         const err = Error(IS_REQUIRED_ERROR)
         err.errors = config.error || IS_REQUIRED_ERROR;
@@ -96,7 +96,7 @@ const vlad = (validation = v => v) => {
       }
       return v;
     }),
-    test: (config) => vlad(v => {
+    test: (config) => valuator(v => {
       if(config(v)) {
         return true
       } else {
@@ -113,7 +113,7 @@ const vlad = (validation = v => v) => {
 
 // Simple validator
 
-const simpleValidator = vlad()
+const simpleValidator = valuator()
   .number()
   .max(20);
 
@@ -134,7 +134,7 @@ const {
   object,
   required,
   test
-} = vlad()
+} = valuator()
 
 const schema = object({
   name: string(),
