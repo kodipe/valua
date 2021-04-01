@@ -1,0 +1,24 @@
+{
+  "name": "valuator",
+  "version": "0.0.1",
+  "description": "Functional JavaScript validation library",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "devDependencies": {
+    "typescript": "^4.2.3"
+  },
+  "scripts": {
+    "build" : "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kodipe/valuator.git"
+  },
+  "author": "Konrad Przydział <konrad.przydzial@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kodipe/valuator/issues"
+  },
+  "homepage": "https://github.com/kodipe/valuator#readme",
+  "files": ["lib/**/*"]
+}
