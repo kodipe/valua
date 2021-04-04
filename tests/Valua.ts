@@ -1,74 +1,77 @@
-import { valua } from "../src/index";
+import { Valua, ValuaError, ErrorCode } from "../src/index";
 
 
 describe("valua", () => {
-    it("should expose string() function", () => {
-        const schema = valua();
+    [
+        "string",
+        "number",
+        "array",
+        "test",
+        "required",
+        "validate",
+        "each",
+        "object",
+        "min",
+        "max",
+        "boolean",
+        "match"
+    ].forEach(fn => {
+        it(`should expose ${fn}() function`, () => {
+            const schema = Valua();
 
-        expect(schema.string).toBeDefined();
-        expect(typeof schema.string).toBe("function")
-    });
+            expect(schema[fn]).toBeDefined();
+            expect(typeof schema[fn]).toBe("function")
+        })
+    })
 
-    it("should expose number() function", () => {
-        const schema = valua();
+    describe("string() validator", () => {
+        it("should validate string", () => {
+            const validator = Valua().string();
 
-        expect(schema.number).toBeDefined();
-        expect(typeof schema.number).toBe("function")
-    });
+            expect(validator.validate("test")).toBe("test")
+        })
 
-    it("should expose array() function", () => {
-        const schema = valua();
+        it("should return IS_NOT_A_STRING_ERROR error when valu is not a string", () => {
+            const validator = Valua().string();
 
-        expect(schema.array).toBeDefined();
-        expect(typeof schema.array).toBe("function")
-    });
+            const result = validator.validate(30);
 
-    it("should expose test() function", () => {
-        const schema = valua();
+            expect(result instanceof ValuaError).toBe(true);
+            expect(result.errors).toBe(ErrorCode.IS_NOT_A_STRING_ERROR)
+        })
+    })
 
-        expect(schema.test).toBeDefined();
-        expect(typeof schema.test).toBe("function")
-    });
+    describe("number() validator", () => {
+        it("should validate number", () => {
+            const validator = Valua().number();
 
-    it("should expose required() function", () => {
-        const schema = valua();
+            expect(validator.validate(30)).toBe(30)
+        })
 
-        expect(schema.required).toBeDefined();
-        expect(typeof schema.required).toBe("function")
-    });
+        it("should return IS_NOT_A_NUMBER_ERROR error when valu is not a number", () => {
+            const validator = Valua().number();
 
-    it("should expose validate() function", () => {
-        const schema = valua();
+            const result = validator.validate("test");
 
-        expect(schema.validate).toBeDefined();
-        expect(typeof schema.validate).toBe("function")
-    });
+            expect(result instanceof ValuaError).toBe(true);
+            expect(result.errors).toBe(ErrorCode.IS_NOT_A_NUMBER_ERROR)
+        })
+    })
 
-    it("should expose each() function", () => {
-        const schema = valua();
+    describe("match() validator", () => {
+        it("should validate regex", () => {
+            const validator = Valua().match(/^foobar$/);
 
-        expect(schema.each).toBeDefined();
-        expect(typeof schema.each).toBe("function")
-    });
+            expect(validator.validate("foobar")).toBe("foobar")
+        })
 
-    it("should expose object() function", () => {
-        const schema = valua();
+        it("should return NOT_MATCH_ERROR error when value not passed regex test", () => {
+            const validator = Valua().match(/^foobar$/);
 
-        expect(schema.object).toBeDefined();
-        expect(typeof schema.object).toBe("function")
-    });
+            const result = validator.validate("test123");
 
-    it("should expose min() function", () => {
-        const schema = valua();
-
-        expect(schema.min).toBeDefined();
-        expect(typeof schema.min).toBe("function")
-    });
-
-    it("should expose max() function", () => {
-        const schema = valua();
-
-        expect(schema.max).toBeDefined();
-        expect(typeof schema.max).toBe("function")
-    });
+            expect(result instanceof ValuaError).toBe(true);
+            expect(result.errors).toBe(ErrorCode.NOT_MATCH_ERROR)
+        })
+    })
 })
