@@ -2,9 +2,9 @@ import { ValuaError } from "./ValuaError";
 import { ValidatorConfig } from "./ValidatorConfig"
 import { ErrorCode } from "./ErrorCode";
 
-const valua = (validation = (v: any) => v) => {
+const Valua = (validation = (v: any) => v) => {
   return {
-    string: (config: ValidatorConfig = {}) => valua((v: any) => {
+    string: (config: ValidatorConfig = {}) => Valua((v: any) => {
       if(typeof v === "string") {
         return v
       } else {
@@ -13,7 +13,7 @@ const valua = (validation = (v: any) => v) => {
         return err;
       }
     }),
-    number: (config: ValidatorConfig = {}) => valua((v: any) => {
+    number: (config: ValidatorConfig = {}) => Valua((v: any) => {
       if(typeof v === "number") {
         return v
       } else {
@@ -22,7 +22,7 @@ const valua = (validation = (v: any) => v) => {
         return err;
       }
     }),
-    min: (threshold: number, config: ValidatorConfig = {}) => valua((v: any) => {
+    min: (threshold: number, config: ValidatorConfig = {}) => Valua((v: any) => {
       if(v >= threshold) {
         return v;
       } else {
@@ -31,7 +31,7 @@ const valua = (validation = (v: any) => v) => {
         return err;
       }
     }),
-    max: (threshold: number, config = {}) => valua((v: any) => {
+    max: (threshold: number, config = {}) => Valua((v: any) => {
       if(v <= threshold) {
         return v;
       } else {
@@ -40,7 +40,7 @@ const valua = (validation = (v: any) => v) => {
         return err;
       }
     }),
-    object: (config: { [key: string]: any; }) => valua((v: any) => {
+    object: (config: { [key: string]: any; }) => Valua((v: any) => {
       const objErrors: { [key: string]: string; } = {};
 
       Object.keys(config).forEach((schemaKey: string) => {
@@ -57,7 +57,7 @@ const valua = (validation = (v: any) => v) => {
       }
       return v;
     }),
-    array: (config: ValidatorConfig = {}) => valua((v: any) => {
+    array: (config: ValidatorConfig = {}) => Valua((v: any) => {
       if(Array.isArray(v)) {
         return v;
       } else {
@@ -66,7 +66,7 @@ const valua = (validation = (v: any) => v) => {
         return err;
       }
     }),
-    each: (config: any) => valua((v: any) => {
+    each: (config: any) => Valua((v: any) => {
       const arrErrors: { [key: number]: string; } = {};
 
       v.forEach((i: any, index: number) => {
@@ -84,7 +84,7 @@ const valua = (validation = (v: any) => v) => {
 
       return v;
     }),
-    required: (config: ValidatorConfig = {}) => valua((v: any) => {
+    required: (config: ValidatorConfig = {}) => Valua((v: any) => {
       if(v === undefined || v === null) {
         const err = new ValuaError(ErrorCode.IS_REQUIRED_ERROR)
         err.errors = config.error || ErrorCode.IS_REQUIRED_ERROR;
@@ -92,7 +92,7 @@ const valua = (validation = (v: any) => v) => {
       }
       return v;
     }),
-    test: (test: (v: any) => any, config: ValidatorConfig = {}) => valua((v: any) => {
+    test: (test: (v: any) => any, config: ValidatorConfig = {}) => Valua((v: any) => {
       if(test(v)) {
         return true
       } else {
@@ -101,7 +101,7 @@ const valua = (validation = (v: any) => v) => {
         return err;
       }
     }),
-    boolean: (config: ValidatorConfig) => valua((v: any) => {
+    boolean: (config: ValidatorConfig = {}) => Valua((v: any) => {
       if(typeof v === "boolean") {
         return true;
       } else {
@@ -117,5 +117,5 @@ const valua = (validation = (v: any) => v) => {
 }
 
 export {
-  valua
+  Valua
 }

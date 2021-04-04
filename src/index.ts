@@ -1,4 +1,5 @@
 export { ValuaError } from "./ValuaError";
 export { ValidatorConfig } from "./ValidatorConfig";
+export { ErrorCode } from "./ErrorCode";
 
-export { valua } from "./Valua";
+export { Valua } from "./Valua";
