@@ -1,13 +1,6 @@
 import { ValuaError } from "./ValuaError";
 import { ValidatorConfig } from "./ValidatorConfig"
-
-const IS_NOT_A_STRING_ERROR = "IS_NOT_A_STRING_ERROR";
-const IS_NOT_A_NUMBER_ERROR = "IS_NOT_A_NUMBER_ERROR";
-const IS_REQUIRED_ERROR = "IS_REQUIRED_ERROR";
-const NOT_PASSED_TEST_ERROR = "NOT_PASSED_TEST_ERROR"
-const TO_SMALL_ERROR = "TO_SMALL_ERROR"
-const TO_BIG_ERROR = "TO_BIG_ERROR"
-const IS_NOT_AN_ARRAY_ERROR = "IS_NOT_AN_ARRAY_ERROR"
+import { ErrorCode } from "./ErrorCode";
 
 const valua = (validation = (v: any) => v) => {
   return {
@@ -15,8 +8,8 @@ const valua = (validation = (v: any) => v) => {
       if(typeof v === "string") {
         return v
       } else {
-        const err = new ValuaError(IS_NOT_A_STRING_ERROR);
-        err.errors = config.error || IS_NOT_A_STRING_ERROR
+        const err = new ValuaError(ErrorCode.IS_NOT_A_STRING_ERROR);
+        err.errors = config.error || ErrorCode.IS_NOT_A_STRING_ERROR
         return err;
       }
     }),
@@ -24,8 +17,8 @@ const valua = (validation = (v: any) => v) => {
       if(typeof v === "number") {
         return v
       } else {
-        const err = new ValuaError(IS_NOT_A_NUMBER_ERROR);
-        err.errors = config.error || IS_NOT_A_NUMBER_ERROR;
+        const err = new ValuaError(ErrorCode.IS_NOT_A_NUMBER_ERROR);
+        err.errors = config.error || ErrorCode.IS_NOT_A_NUMBER_ERROR;
         return err;
       }
     }),
@@ -33,8 +26,8 @@ const valua = (validation = (v: any) => v) => {
       if(v >= threshold) {
         return v;
       } else {
-        const err = new ValuaError(TO_SMALL_ERROR)
-        err.errors = config.error || TO_SMALL_ERROR;
+        const err = new ValuaError(ErrorCode.TO_SMALL_ERROR)
+        err.errors = config.error || ErrorCode.TO_SMALL_ERROR;
         return err;
       }
     }),
@@ -42,8 +35,8 @@ const valua = (validation = (v: any) => v) => {
       if(v <= threshold) {
         return v;
       } else {
-        const err = new ValuaError(TO_BIG_ERROR)
-        err.errors = TO_BIG_ERROR;
+        const err = new ValuaError(ErrorCode.TO_BIG_ERROR)
+        err.errors = ErrorCode.TO_BIG_ERROR;
         return err;
       }
     }),
@@ -68,8 +61,8 @@ const valua = (validation = (v: any) => v) => {
       if(Array.isArray(v)) {
         return v;
       } else {
-        const err = new ValuaError(IS_NOT_AN_ARRAY_ERROR)
-        err.errors = config.error || IS_NOT_AN_ARRAY_ERROR;
+        const err = new ValuaError(ErrorCode.IS_NOT_AN_ARRAY_ERROR)
+        err.errors = config.error || ErrorCode.IS_NOT_AN_ARRAY_ERROR;
         return err;
       }
     }),
@@ -93,8 +86,8 @@ const valua = (validation = (v: any) => v) => {
     }),
     required: (config: ValidatorConfig = {}) => valua((v: any) => {
       if(v === undefined || v === null) {
-        const err = new ValuaError(IS_REQUIRED_ERROR)
-        err.errors = config.error || IS_REQUIRED_ERROR;
+        const err = new ValuaError(ErrorCode.IS_REQUIRED_ERROR)
+        err.errors = config.error || ErrorCode.IS_REQUIRED_ERROR;
         return err;
       }
       return v;
@@ -103,8 +96,17 @@ const valua = (validation = (v: any) => v) => {
       if(test(v)) {
         return true
       } else {
-        const err = new ValuaError(NOT_PASSED_TEST_ERROR);
-        err.errors = config.error || NOT_PASSED_TEST_ERROR
+        const err = new ValuaError(ErrorCode.NOT_PASSED_TEST_ERROR);
+        err.errors = config.error || ErrorCode.NOT_PASSED_TEST_ERROR
+        return err;
+      }
+    }),
+    boolean: (config: ValidatorConfig) => valua((v: any) => {
+      if(typeof v === "boolean") {
+        return true;
+      } else {
+        const err = new ValuaError(ErrorCode.IS_NOT_BOOLEAN);
+        err.errors = config.error || ErrorCode.IS_NOT_BOOLEAN;
         return err;
       }
     }),
