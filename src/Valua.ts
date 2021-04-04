@@ -94,10 +94,19 @@ const Valua = (validation = (v: any) => v) => {
     }),
     test: (test: (v: any) => any, config: ValidatorConfig = {}) => Valua((v: any) => {
       if(test(v)) {
-        return true
+        return v
       } else {
         const err = new ValuaError(ErrorCode.NOT_PASSED_TEST_ERROR);
         err.errors = config.error || ErrorCode.NOT_PASSED_TEST_ERROR
+        return err;
+      }
+    }),
+    match: (regex: RegExp, config: ValidatorConfig = {}) => Valua((v: any) => {
+      if(regex.test(v)) {
+        return v;
+      } else {
+        const err = new ValuaError(ErrorCode.NOT_MATCH_ERROR);
+        err.errors = config.error || ErrorCode.NOT_MATCH_ERROR
         return err;
       }
     }),

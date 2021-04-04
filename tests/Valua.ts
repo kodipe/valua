@@ -13,7 +13,8 @@ describe("valua", () => {
         "object",
         "min",
         "max",
-        "boolean"
+        "boolean",
+        "match"
     ].forEach(fn => {
         it(`should expose ${fn}() function`, () => {
             const schema = Valua();
@@ -54,6 +55,23 @@ describe("valua", () => {
 
             expect(result instanceof ValuaError).toBe(true);
             expect(result.errors).toBe(ErrorCode.IS_NOT_A_NUMBER_ERROR)
+        })
+    })
+
+    describe("match() validator", () => {
+        it("should validate regex", () => {
+            const validator = Valua().match(/^foobar$/);
+
+            expect(validator.validate("foobar")).toBe("foobar")
+        })
+
+        it("should return NOT_MATCH_ERROR error when value not passed regex test", () => {
+            const validator = Valua().match(/^foobar$/);
+
+            const result = validator.validate("test123");
+
+            expect(result instanceof ValuaError).toBe(true);
+            expect(result.errors).toBe(ErrorCode.NOT_MATCH_ERROR)
         })
     })
 })

@@ -6,6 +6,20 @@
 
 ## Usage
 
+## Validators
+
+* `Valua().string()`
+* `Valua().number()`
+* `Valua().boolean()`
+* `Valua().min()`
+* `Valua().max()`
+* `Valua().array()`
+* `Valua().object()`
+* `Valua().each()`
+* `Valua().required()`
+* `Valua().test()`
+* `Valua().match()`
+
 ### Simple validator
 
 ```js
