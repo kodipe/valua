@@ -1,7 +1,7 @@
 import { Valua, ValuaError, ErrorCode } from "../src/index";
 
 
-describe("valua", () => {
+describe("Valua", () => {
     [
         "string",
         "number",

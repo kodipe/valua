@@ -66,11 +66,11 @@ const Valua = (validation = (v: any) => v) => {
         return err;
       }
     }),
-    each: (config: any) => Valua((v: any) => {
+    each: (validator: any, config: ValidatorConfig) => Valua((v: any) => {
       const arrErrors: { [key: number]: string; } = {};
 
       v.forEach((i: any, index: number) => {
-        const result = config.validate(i);
+        const result = validator.validate(i);
         if(result instanceof ValuaError) {
           arrErrors[index] = result.errors;
         }
