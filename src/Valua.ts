@@ -1,8 +1,9 @@
 import { ValuaError } from "./ValuaError";
 import { ValidatorConfig } from "./ValidatorConfig"
 import { ErrorCode } from "./ErrorCode";
+import { ValuaMonad } from "./ValuaMonad";
 
-const Valua = (validation = (v: any) => v) => {
+const Valua = (validation = (v: any) => v): ValuaMonad => {
   return {
     string: (config: ValidatorConfig = {}) => Valua((v: any) => {
       if(typeof v === "string") {
