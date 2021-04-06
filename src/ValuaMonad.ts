@@ -1,5 +1,6 @@
 import { ValidatorConfig } from "./ValidatorConfig";
 import { ValuaError } from "./ValuaError";
+import { ValidationResult } from "./ValidationResult";
 
 interface ValuaMonad {
     string(config?: ValidatorConfig): ValuaMonad;
@@ -13,7 +14,7 @@ interface ValuaMonad {
     match(regex: RegExp, config?: ValidatorConfig): ValuaMonad;
     boolean(config?: ValidatorConfig): ValuaMonad;
     required(config?: ValidatorConfig): ValuaMonad;
-    validate(value: any): any|ValuaError;
+    validate(value?: any): ValidationResult;
 }
 
 export {

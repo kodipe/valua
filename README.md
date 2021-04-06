@@ -20,16 +20,17 @@
 * `Valua().test()`
 * `Valua().match()`
 
-### Simple validator
+### Built-in validator
 
 ```js
 import { Valua } from "valua";
 
 const validator = Valua().string();
 
-validator.validate("string");
+validator.validate("example string").isValid(); // true
 ```
-### Complex validator for objects
+
+### Object validator
 
 ```js
 import { Valua } from "valua";
@@ -42,10 +43,10 @@ const validator = Valua().object({
 validator.validate({
     name: "John",
     age: 25
-})
+}).isValid() // true
 ```
 
-### Complex validator for arrays
+### Array validator
 
 ```js
 import { Valua } from "valua";
@@ -58,5 +59,5 @@ validator.validate([
     12, 
     16, 
     11
-])
+]).isValid() // true
 ```

@@ -1,4 +1,4 @@
-import { Valua, ValuaError, ErrorCode } from "../src/index";
+import { Valua, ErrorCode } from "../src/index";
 
 
 describe("Valua", () => {
@@ -28,7 +28,7 @@ describe("Valua", () => {
         it("should validate string", () => {
             const validator = Valua().string();
 
-            expect(validator.validate("test")).toBe("test")
+            expect(validator.validate("test").isValid()).toBe(true)
         })
 
         it("should return IS_NOT_A_STRING_ERROR error when valu is not a string", () => {
@@ -36,8 +36,8 @@ describe("Valua", () => {
 
             const result = validator.validate(30);
 
-            expect(result instanceof ValuaError).toBe(true);
-            expect(result.errors).toBe(ErrorCode.IS_NOT_A_STRING_ERROR)
+            expect(result.isValid()).toBe(false);
+            expect(result.getErrors()).toBe(ErrorCode.IS_NOT_A_STRING_ERROR)
         })
     })
 
@@ -45,7 +45,7 @@ describe("Valua", () => {
         it("should validate number", () => {
             const validator = Valua().number();
 
-            expect(validator.validate(30)).toBe(30)
+            expect(validator.validate(30).isValid()).toBe(true)
         })
 
         it("should return IS_NOT_A_NUMBER_ERROR error when valu is not a number", () => {
@@ -53,8 +53,8 @@ describe("Valua", () => {
 
             const result = validator.validate("test");
 
-            expect(result instanceof ValuaError).toBe(true);
-            expect(result.errors).toBe(ErrorCode.IS_NOT_A_NUMBER_ERROR)
+            expect(result.isValid()).toBe(false);
+            expect(result.getErrors()).toBe(ErrorCode.IS_NOT_A_NUMBER_ERROR)
         })
     })
 
@@ -62,7 +62,7 @@ describe("Valua", () => {
         it("should validate regex", () => {
             const validator = Valua().match(/^foobar$/);
 
-            expect(validator.validate("foobar")).toBe("foobar")
+            expect(validator.validate("foobar").isValid()).toBe(true)
         })
 
         it("should return NOT_MATCH_ERROR error when value not passed regex test", () => {
@@ -70,8 +70,8 @@ describe("Valua", () => {
 
             const result = validator.validate("test123");
 
-            expect(result instanceof ValuaError).toBe(true);
-            expect(result.errors).toBe(ErrorCode.NOT_MATCH_ERROR)
+            expect(result.isValid()).toBe(false);
+            expect(result.getErrors()).toBe(ErrorCode.NOT_MATCH_ERROR)
         })
     })
 })

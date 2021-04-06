@@ -2,6 +2,7 @@ import { ValuaError } from "./ValuaError";
 import { ValidatorConfig } from "./ValidatorConfig"
 import { ErrorCode } from "./ErrorCode";
 import { ValuaMonad } from "./ValuaMonad";
+import { ValidationResult } from "./ValidationResult";
 
 const Valua = (validation = (v: any) => v): ValuaMonad => {
   return {
@@ -46,8 +47,8 @@ const Valua = (validation = (v: any) => v): ValuaMonad => {
 
       Object.keys(config).forEach((schemaKey: string) => {
         const result = config[schemaKey].validate(v[schemaKey] || null);
-        if(result instanceof ValuaError) {
-          objErrors[schemaKey] = result.errors;
+        if(!result.isValid()) {
+          objErrors[schemaKey] = result.getErrors();
         }
       })
 
@@ -72,8 +73,8 @@ const Valua = (validation = (v: any) => v): ValuaMonad => {
 
       v.forEach((i: any, index: number) => {
         const result = validator.validate(i);
-        if(result instanceof ValuaError) {
-          arrErrors[index] = result.errors;
+        if(!result.isValid()) {
+          arrErrors[index] = result.getErrors();
         }
       });
 
@@ -120,8 +121,19 @@ const Valua = (validation = (v: any) => v): ValuaMonad => {
         return err;
       }
     }),
-    validate: (v: any) => {
-      return validation(v);
+    validate: (v: any): ValidationResult => {
+
+      const result = validation(v);
+
+      return {
+        isValid: () => !(result instanceof ValuaError),
+        getErrors: () => {
+          if(result instanceof ValuaError) {
+            return result.errors
+          }
+          return null
+        }
+      };
     },
   }
 }
