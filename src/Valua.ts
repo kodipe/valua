@@ -1,8 +1,10 @@
 import { ValuaError } from "./ValuaError";
 import { ValidatorConfig } from "./ValidatorConfig"
 import { ErrorCode } from "./ErrorCode";
+import { ValuaMonad } from "./ValuaMonad";
+import { ValidationResult } from "./ValidationResult";
 
-const Valua = (validation = (v: any) => v) => {
+const Valua = (validation = (v: any) => v): ValuaMonad => {
   return {
     string: (config: ValidatorConfig = {}) => Valua((v: any) => {
       if(typeof v === "string") {
@@ -45,8 +47,8 @@ const Valua = (validation = (v: any) => v) => {
 
       Object.keys(config).forEach((schemaKey: string) => {
         const result = config[schemaKey].validate(v[schemaKey] || null);
-        if(result instanceof ValuaError) {
-          objErrors[schemaKey] = result.errors;
+        if(!result.isValid()) {
+          objErrors[schemaKey] = result.getErrors();
         }
       })
 
@@ -66,13 +68,13 @@ const Valua = (validation = (v: any) => v) => {
         return err;
       }
     }),
-    each: (config: any) => Valua((v: any) => {
+    each: (validator: any, config: ValidatorConfig) => Valua((v: any) => {
       const arrErrors: { [key: number]: string; } = {};
 
       v.forEach((i: any, index: number) => {
-        const result = config.validate(i);
-        if(result instanceof ValuaError) {
-          arrErrors[index] = result.errors;
+        const result = validator.validate(i);
+        if(!result.isValid()) {
+          arrErrors[index] = result.getErrors();
         }
       });
 
@@ -119,8 +121,19 @@ const Valua = (validation = (v: any) => v) => {
         return err;
       }
     }),
-    validate: (v: any) => {
-      return validation(v);
+    validate: (v: any): ValidationResult => {
+
+      const result = validation(v);
+
+      return {
+        isValid: () => !(result instanceof ValuaError),
+        getErrors: () => {
+          if(result instanceof ValuaError) {
+            return result.errors
+          }
+          return null
+        }
+      };
     },
   }
 }

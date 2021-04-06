@@ -6,7 +6,7 @@
 
 ## Usage
 
-## Validators
+### Validators
 
 * `Valua().string()`
 * `Valua().number()`
@@ -20,19 +20,20 @@
 * `Valua().test()`
 * `Valua().match()`
 
-### Simple validator
+### Built-in validator
 
 ```js
 import { Valua } from "valua";
 
 const validator = Valua().string();
 
-validator.validate("string");
+validator.validate("example string").isValid(); // true
 ```
-### Complex validator for objects
+
+### Object validator
 
 ```js
-import { Valua } form "valua";
+import { Valua } from "valua";
 
 const validator = Valua().object({
     name: Valua().string(),
@@ -42,5 +43,21 @@ const validator = Valua().object({
 validator.validate({
     name: "John",
     age: 25
-})
+}).isValid() // true
+```
+
+### Array validator
+
+```js
+import { Valua } from "valua";
+
+const validator = Valua().array().each(
+    Valua().number().min(10)
+)
+
+validator.validate([
+    12, 
+    16, 
+    11
+]).isValid() // true
 ```
