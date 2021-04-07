@@ -41,6 +41,40 @@ describe("Valua", () => {
         })
     })
 
+    describe("minLength() validator", () => {
+        it("should validate string length", () => {
+            const validator = Valua().string().minLength(3);
+
+            expect(validator.validate("test").isValid()).toBe(true)
+        })
+
+        it("should return TO_SHORT_ERROR error when value length is to low", () => {
+            const validator = Valua().string().minLength(10);
+
+            const result = validator.validate("test");
+
+            expect(result.isValid()).toBe(false);
+            expect(result.getErrors()).toBe(ErrorCode.TO_SHORT_ERROR)
+        })
+    })
+
+    describe("maxLength() validator", () => {
+        it("should validate string length", () => {
+            const validator = Valua().string().maxLength(10);
+
+            expect(validator.validate("test").isValid()).toBe(true)
+        })
+
+        it("should return TO_LONG_ERROR error when value length is to high", () => {
+            const validator = Valua().string().maxLength(3);
+
+            const result = validator.validate("test");
+
+            expect(result.isValid()).toBe(false);
+            expect(result.getErrors()).toBe(ErrorCode.TO_LONG_ERROR)
+        })
+    })
+
     describe("number() validator", () => {
         it("should validate number", () => {
             const validator = Valua().number();

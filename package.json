@@ -15,7 +15,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "prepublishOnly": "tsc"
   },
   "repository": {
     "type": "git",
