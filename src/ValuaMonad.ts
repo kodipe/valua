@@ -1,9 +1,10 @@
 import { ValidatorConfig } from "./ValidatorConfig";
-import { ValuaError } from "./ValuaError";
 import { ValidationResult } from "./ValidationResult";
 
 interface ValuaMonad {
     string(config?: ValidatorConfig): ValuaMonad;
+    minLength(threshold:number, config?: ValidatorConfig): ValuaMonad;
+    maxLength(threshold:number, config?: ValidatorConfig): ValuaMonad;
     number(config?: ValidatorConfig): ValuaMonad;
     min(threshold:number, config?: ValidatorConfig): ValuaMonad;
     max(threshold:number, config?: ValidatorConfig): ValuaMonad;

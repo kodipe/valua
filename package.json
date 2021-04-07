@@ -1,6 +1,6 @@
 {
   "name": "valua",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Functional JavaScript validation library",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
@@ -15,7 +15,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "prepublishOnly": "tsc"
   },
   "repository": {
     "type": "git",

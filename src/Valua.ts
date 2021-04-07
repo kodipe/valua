@@ -15,6 +15,24 @@ const Valua = (validation = (v: any) => v): ValuaMonad => {
         return err;
       }
     }),
+    minLength: (threshold: number, config: ValidatorConfig = {}) => Valua((v: any) => {
+      if(v.length >= threshold) {
+        return v;
+      } else {
+        const err = new ValuaError(ErrorCode.TO_SHORT_ERROR)
+        err.errors = config.error || ErrorCode.TO_SHORT_ERROR;
+        return err;
+      }
+    }),
+    maxLength: (threshold: number, config: ValidatorConfig = {}) => Valua((v: any) => {
+      if(v.length <= threshold) {
+        return v;
+      } else {
+        const err = new ValuaError(ErrorCode.TO_LONG_ERROR)
+        err.errors = config.error || ErrorCode.TO_LONG_ERROR;
+        return err;
+      }
+    }),
     number: (config: ValidatorConfig = {}) => Valua((v: any) => {
       if(typeof v === "number") {
         return v
